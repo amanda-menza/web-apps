@@ -1,0 +1,25 @@
+<header>
+  <a href="{{ url_for('main.index') }}"><i class="fa fa-home"></i></a>
+  <h3 class="headText">Profile</h3>
+</header>
+<section id="sectionContainer">
+  <span class="info">
+    <img src="{{user.imgProf}}" alt="profile picture" class="pic" />
+    <h2 class="text">{{user.handle}}</h2>
+  </span>
+  <span class="followings">
+    <table>
+      <tr>
+        <th>Following</th>
+        <th>Followers</th>
+      </tr>
+      <tr>
+        <td>{{user.following}}</td>
+        <td>{{user.followers}}</td>
+      </tr>
+    </table>
+    <form>
+      <button class="followBtn"><i class="fa fa-plus"></i> Follow</button>
+    </form>
+  </span>
+</section>

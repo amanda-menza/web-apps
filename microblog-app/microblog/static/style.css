@@ -1,0 +1,218 @@
+#navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  align-items: center;
+  font-family: "Copperplate", fantasy;
+}
+
+/* Navbar links */
+#navbar a,
+h3,
+h4,
+form {
+  display: inline;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+#profile .pic {
+  vertical-align: top;
+  border-radius: 50%;
+  width: 35px;
+}
+#text {
+  vertical-align: top;
+  display: inline-block;
+}
+
+#text p {
+  margin: 0;
+  padding: 0;
+}
+.btn {
+  background: transparent;
+  color: white;
+  font-size: 15px;
+  font-family: "Copperplate", fantasy;
+}
+#sectionContainer,
+#photoGrid {
+  margin: 0;
+  padding: 20px;
+  border: 1px solid #000000;
+  color: #ffffff;
+}
+header {
+  margin: 0;
+  padding: 2px;
+  border: 1px solid #000000;
+}
+header > a > i {
+  text-decoration: none;
+  color: #000000;
+}
+.headText {
+  color: #000000;
+  font-family: "Copperplate", fantasy;
+  text-align: center;
+  font-size: 30px;
+}
+#sectionContainer {
+  background: #000000;
+  font-family: "Copperplate", fantasy;
+  height: 100px;
+}
+#sectionContainer .pic {
+  border-radius: 50%;
+  width: 100px;
+  vertical-align: middle;
+  margin-left: 50px;
+}
+#sectionContainer .text {
+  text-align: center;
+  display: inline-block;
+  margin-left: 15px;
+  color: lightblue;
+}
+#sectionContainer .followBtn {
+  background: transparent;
+  border-width: 4px;
+  color: lightblue;
+  font-size: 15px;
+  margin-right: -20px;
+  font-family: "Copperplate", fantasy;
+}
+.info {
+  float: left;
+  margin-right: 15px;
+}
+.following {
+  float: right;
+  font-family: "Copperplate", fantasy;
+}
+td,
+th {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+th {
+  font-size: 12px;
+}
+body {
+  background: lightblue;
+  width: 98vw;
+  margin-bottom: 50px;
+}
+.feedContianer {
+  background-color: lightblue;
+}
+.feedTitle {
+  color: #000000;
+  font-family: "Copperplate", fantasy;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 0px;
+}
+#photoGrid {
+  display: grid;
+  color: #000000;
+  grid-template-columns: repeat(3, 1fr);
+  grid-row-gap: 8px;
+  grid-column-gap: 8%;
+  margin: auto;
+  background: #ffffff;
+}
+.post {
+  width: 300px;
+  height: 350px;
+  border: 2px solid black;
+  max-width: 90%;
+  height: auto;
+}
+
+.postFeed {
+  border: 1px solid black;
+  padding: 15px;
+  width: 40%;
+  margin: auto;
+  background: white;
+  color: black;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 10px;
+  font-family: "Copperplate", fantasy;
+}
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.post-img {
+  margin: auto;
+  display: block;
+  height: 300px;
+  width: 500px;
+  margin: auto;
+  padding: 2px;
+  max-width: 90%;
+  height: auto;
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+.actions button {
+  cursor: pointer;
+  font-family: "Copperplate", fantasy;
+}
+.viewPost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  padding: 15px;
+  margin: 20px;
+  background-color: white;
+}
+
+.userComment {
+  border: 2px solid black;
+  background-color: white;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 10px;
+}
+.userComment h4,
+.commentsTitle {
+  font-family: "Copperplate", fantasy;
+  color: #000000;
+}
+.commentActions {
+  float: right;
+}
+
+footer {
+  background-color: black;
+  color: white;
+  font-family: "Copperplate", fantasy;
+  background-attachment: scroll;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  padding-top: 20px;
+  padding-left: 15px;
+}
