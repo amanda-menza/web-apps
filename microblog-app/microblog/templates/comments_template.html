@@ -1,15 +1,26 @@
+<div class="goHome">
+  <a href="{{ url_for('main.index') }}"><i class="fa fa-home"></i></a>
+</div>
 <div class="viewPost">
-  <div class="user-info">
-    <img src="static/profile.jpeg" alt="Username's Profile Picture" />
-    <span>@user1</span>
-  </div>
-  <figure>
-    <img src="static/feed1.jpeg" alt="Instagram Post" />
-    <figcaption>Beautiful plaza de Espana in Sevilla!</figcaption>
-  </figure>
-  <div>
-    <button class="like-btn"><i class="fa fa-heart"></i> Like</button>
+  <a href="{{ url_for('main.profileIndex', user_id=post.user.id) }}"
+    ><div class="postuser-info">{{ post.user.email }}</div></a
+  >
+  <div class="postText">{{post.text}}</div>
+  <div class="viewLike">
+    <button><i class="fa fa-heart"></i> Like</button>
   </div>
 </div>
-<h3 class="commentsTitle">Comments</h3>
+<div class="commentsTitle">
+  <h3 class="commentsTitle">Comments</h3>
+  <form
+    method="POST"
+    action="{{ url_for('main.new_comment', message_id=post.id) }}"
+  >
+    <input type="text" name="text" required />
+    <button type="submit" class="btn">
+      <i class="fa fa-plus-circle"></i> Add Comment
+    </button>
+  </form>
+</div>
+
 {% for comment in comments %} {% include 'comment_template.html' %} {% endfor %}

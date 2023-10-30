@@ -1,9 +1,8 @@
-<div class="userComment">
-  <div class="user-info">
-    <img src="{{comment.user.imgProf}}" alt="Username's Profile Picture" />
-    <span>{{ comment.user.handle }}</span>
-  </div>
-  <h4 class="commentText">{{comment.text}}</h4>
+<div class="postFeed">
+  <a href="{{ url_for('main.profileIndex', user_id=post.user.id) }}"
+    ><div class="user-info">{{ comment.user.email }}</div></a
+  >
+  {{comment.text}}
   <div class="commentActions">
     <button class="like-btn"><i class="fa fa-heart"></i> Like</button>
   </div>

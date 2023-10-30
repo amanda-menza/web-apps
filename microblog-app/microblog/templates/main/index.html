@@ -1,21 +1,21 @@
 {% extends 'base.html' %} {% block content %}
 <header>
   <div id="navbar">
-    <form>
-      <button class="btn"><i class="fa fa-plus-circle"></i> New Post</button>
-    </form>
-    <h3>Feed</h3>
     <div id="profile">
-      <img src="static/profile2.jpeg" alt="profile picture" class="pic" />
       <div id="text">
-        <h4>@amandam1102</h4>
         <p>
-          <a href="{{ url_for('main.profileIndex') }}"
-            ><small>Profile</small></a
+          <a href="{{ url_for('main.profileIndex', user_id=current_user.id) }}"
+            >My Profile</a
           >
         </p>
       </div>
     </div>
+    <h3>Feed</h3>
+
+    <form action="{{ url_for('main.new_post') }}" method="post">
+      <input type="text" name="text" required />
+      <button class="btn"><i class="fa fa-plus-circle"></i> New Post</button>
+    </form>
   </div>
 </header>
 

@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block content %}
+<header>
+  <a href="{{ url_for('main.profileIndex', user_id=user.id) }}"
+    ><i class="fa fa-arrow-left"></i
+  ></a>
+  <h3 class="headText">Profile</h3>
+</header>
+{% include 'follows_template.html' %} {% endblock %}

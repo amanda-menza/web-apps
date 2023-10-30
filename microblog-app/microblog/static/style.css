@@ -8,7 +8,9 @@
   align-items: center;
   font-family: "Copperplate", fantasy;
 }
-
+#navbar h3 {
+  margin-left: 150px;
+}
 /* Navbar links */
 #navbar a,
 h3,
@@ -21,11 +23,6 @@ form {
   text-decoration: none;
 }
 
-#profile .pic {
-  vertical-align: top;
-  border-radius: 50%;
-  width: 35px;
-}
 #text {
   vertical-align: top;
   display: inline-block;
@@ -41,12 +38,22 @@ form {
   font-size: 15px;
   font-family: "Copperplate", fantasy;
 }
-#sectionContainer,
-#photoGrid {
+#sectionContainer {
   margin: 0;
   padding: 20px;
   border: 1px solid #000000;
   color: #ffffff;
+}
+.username {
+  color: black;
+  font-family: "Copperplate", fantasy;
+  font-weight: bold;
+}
+.log {
+  text-decoration: underline;
+  color: black;
+  margin-left: 15px;
+  font-family: "Copperplate", fantasy;
 }
 header {
   margin: 0;
@@ -56,6 +63,12 @@ header {
 header > a > i {
   text-decoration: none;
   color: #000000;
+}
+.goHome > a > i {
+  color: #000000;
+  margin-left: 30px;
+  text-decoration: none;
+  font-size: 20px;
 }
 .headText {
   color: #000000;
@@ -144,63 +157,57 @@ body {
   margin: auto;
   background: white;
   color: black;
+  margin-top: 5px;
 }
 .user-info {
   display: flex;
   align-items: center;
-  justify-content: left;
   margin-bottom: 10px;
   font-family: "Copperplate", fantasy;
+  color: black;
+  font-weight: bold;
 }
-.user-info img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+.postuser-info {
+  text-align: left;
+  margin: 10px;
+  font-family: "Copperplate", fantasy;
+  color: black;
+  font-weight: bold;
 }
-.post-img {
-  margin: auto;
-  display: block;
-  height: 300px;
-  width: 500px;
-  margin: auto;
-  padding: 2px;
-  max-width: 90%;
-  height: auto;
-}
+
 .actions {
   display: flex;
   justify-content: space-between;
+  margin-top: 5px;
 }
 .actions button {
   cursor: pointer;
   font-family: "Copperplate", fantasy;
 }
 .viewPost {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   border: 2px solid black;
   padding: 15px;
   margin: 20px;
   background-color: white;
 }
-
-.userComment {
-  border: 2px solid black;
-  background-color: white;
-  margin-left: 20px;
-  margin-right: 20px;
-  padding: 10px;
+.postText {
+  display: block;
+  text-align: center;
 }
-.userComment h4,
+
 .commentsTitle {
   font-family: "Copperplate", fantasy;
   color: #000000;
+  display: block;
+  text-align: center;
+  margin: 0px;
+}
+.viewLike {
+  display: block;
+  text-align: right;
 }
 .commentActions {
-  float: right;
+  text-align: right;
 }
 
 footer {
@@ -215,4 +222,27 @@ footer {
   height: 40px;
   padding-top: 20px;
   padding-left: 15px;
+}
+.notification {
+  font-family: "Copperplate", fantasy;
+  color: black;
+}
+.login-signin {
+  font-family: "Copperplate", fantasy;
+  color: black;
+  text-align: center;
+  font-size: 30px;
+}
+.inForm {
+  font-family: "Copperplate", fantasy;
+  color: black;
+  margin-bottom: -10px;
+}
+.inForm div {
+  padding: 5px;
+}
+.followtext > a {
+  text-decoration: none;
+  font-family: "Copperplate", fantasy;
+  color: white;
 }
