@@ -1,35 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Microblogging app</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  </head>
-  <header>
-    {% if current_user.is_authenticated: %}
-    <div>
-      <h4 class="username">@{{current_user.name}}</h4>
-    </div>
-    <div>
-      <a class="log" href="{{ url_for('auth.logout') }}"
-        ><small>Logout</small></a
-      >
-    </div>
-    {% endif %}
-  </header>
+{% extends 'base.html' %} {% block content %} {% with messages =
+get_flashed_messages() %} {% for message in messages %}
+<div class="notification">{{ message }}</div>
+{% endfor %} {% endwith %}
+<h2 class="login-signin">Log In</h2>
+<form class="inForm" action="{{ url_for('auth.login') }}" method="post">
+  <div>
+    <label>Email: <input type="email" name="email" required /></label>
+  </div>
+  <div>
+    <label>Password: <input type="password" name="password" required /></label>
+  </div>
+  <div><input type="submit" value="Log In" /></div>
+  <div>
+    <a class="login-signup" href="{{ url_for('auth.signup') }}"
+      ><small>Sign Up</small></a
+    >
+  </div>
+</form>
 
-  <body>
-    {% block content %}{% endblock %}
-    <footer class="homeFooter">
-      <small>Developed for Web applications</small>
-    </footer>
-  </body>
-</html>
+{% endblock %}
