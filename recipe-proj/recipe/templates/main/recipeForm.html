@@ -1,0 +1,123 @@
+{% extends 'base.html' %} {% block content %}
+<form class="recipe-form" action="" method="POST">
+  <div>
+    <label>Title: <input type="text" name="title" required /></label>
+  </div>
+  <div>
+    <label
+      >Description: <textarea name="description" required></textarea>
+    </label>
+  </div>
+  <div>
+    <label>Servings: <input type="number" name="servings" required /></label>
+  </div>
+  <div>
+    <label
+      >Cooking Time (minutes):
+      <input type="number" name="cooking-time" required
+    /></label>
+  </div>
+  <div class="ingredientsContainer">
+    <div class="ingredientsTemplate">
+      <label
+        >Ingredient: <input type="text" name="ingredient" required
+      /></label>
+      <label
+        >Quantity: <input type="number" name="ingredient-amt" required
+      /></label>
+      <input
+        type="text"
+        id="ingredient-measure"
+        name="ingredient-measure"
+        list="measureOptions"
+        required
+      />
+      <datalist id="measureOptions">
+        <option value="teaspoon(s)"></option>
+        <option value="tablespoon(s)"></option>
+        <option value="ounce(s)"></option>
+        <option value="fl. ounce(s)"></option>
+        <option value="cup(s)"></option>
+        <option value="pint(s)"></option>
+        <option value="quart(s)"></option>
+        <option value="gallon(s)"></option>
+        <option value="gram(s)"></option>
+        <option value="kilogram(s)"></option>
+        <option value="milligram(s)"></option>
+        <option value="pound(s)"></option>
+        <option value="milliliter(s)"></option>
+        <option value="liter(s)"></option>
+        <option value="pinch(es)"></option>
+      </datalist>
+    </div>
+  </div>
+  <div class="ingredient-controls">
+    <button id="addIngredient" class="add">
+      <i class="fa fa-plus"></i>Add Ingredient
+    </button>
+    <button id="removeIngredient" class="remove">
+      <i class="fa fa-minus"></i>Remove Ingredient
+    </button>
+  </div>
+  <div class="stepsContainer">
+    <div class="stepsTemplate">
+      <input type="text" name="step" placeholder="Step" required />
+    </div>
+  </div>
+  <div class="step-controls">
+    <button id="addStep" class="add"><i class="fa fa-plus"></i>Add Step</button>
+    <button id="removeStep" class="remove">
+      <i class="fa fa-minus"></i>Remove Step
+    </button>
+  </div>
+  <input name="submit" type="submit" value="Submit" />
+</form>
+
+<script>
+  // Insert your JavaScript code here
+  document.addEventListener("DOMContentLoaded", function () {
+    const ingredientsTemplate = document.querySelector(".ingredientsTemplate");
+    const stepsTemplate = document.querySelector(".stepsTemplate");
+
+    document
+      .getElementById("addIngredient")
+      .addEventListener("click", function () {
+        const clonedIngredientsTemplate = ingredientsTemplate.cloneNode(true);
+        document
+          .querySelector(".ingredientsContainer")
+          .appendChild(clonedIngredientsTemplate);
+      });
+
+    document.getElementById("addStep").addEventListener("click", function () {
+      const clonedStepsTemplate = stepsTemplate.cloneNode(true);
+      document
+        .querySelector(".stepsContainer")
+        .appendChild(clonedStepsTemplate);
+    });
+
+    document
+      .getElementById("removeIngredient")
+      .addEventListener("click", function () {
+        const ingredientContainers = document.querySelectorAll(
+          ".ingredientsTemplate"
+        );
+        if (ingredientContainers.length > 1) {
+          document
+            .querySelector(".ingredientsContainer")
+            .removeChild(ingredientContainers[ingredientContainers.length - 1]);
+        }
+      });
+
+    document
+      .getElementById("removeStep")
+      .addEventListener("click", function () {
+        const stepContainers = document.querySelectorAll(".stepsTemplate");
+        if (stepContainers.length > 1) {
+          document
+            .querySelector(".stepsContainer")
+            .removeChild(stepContainers[stepContainers.length - 1]);
+        }
+      });
+  });
+</script>
+{% endblock %}

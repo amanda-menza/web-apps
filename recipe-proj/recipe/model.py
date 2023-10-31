@@ -43,7 +43,7 @@ class Recipe(db.Model):
     title=db.Column(db.String(128),nullable=False)
     description = db.Column(db.String(512), nullable=False)
     timestamp = db.Column(db.DateTime(), nullable=False)
-    portion=db.Column(db.Integer, nullable=False)
+    servings=db.Column(db.Integer, nullable=False)
     qingredients=db.relationship('Qingredient', back_populates='recipe')
     cooktime=db.Column(db.Integer, nullable=False)
     steps=db.relationship('Step', back_populates='recipe')
@@ -62,6 +62,8 @@ class Qingredient(db.Model):
     ingredient=db.relationship("Ingredient", back_populates="qingredients")
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='qingredients')
+    amount=db.Column(db.Double, nullable=False)
+    measure=db.Column(db.String(64), nullable=False)
 
 class Step(db.Model):
     id=db.Column(db.Integer, primary_key=True)

@@ -1,7 +1,7 @@
 import datetime
 import dateutil.tz
-from . import db
-from flask import Blueprint, abort, redirect, render_template, request, url_for
+from . import db, bcrypt
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import flask_login
 from flask_login import current_user
 
@@ -181,3 +181,55 @@ def followersView(user_id):
     follows = db.session.execute(query).scalars().all()
 
     return render_template("main/follow.html", follows=follows, user=user)
+
+@bp.route("/recipeForm")
+@flask_login.login_required
+def recipeForm():
+    return render_template("main/recipeForm.html")
+
+
+@bp.route("/recipeForm", methods=["POST"])
+@flask_login.login_required
+def recipeForm_post():
+    title = request.form.get("title")
+    description = request.form.get("description")
+    servings = request.form.get("servings")
+    cookTime=request.form.get("cooking-time")
+    new_recipe = model.Recipe(title=title, user=current_user,description=description, servings=servings, cooktime=cookTime)
+    db.session.add(new_recipe)
+    db.session.commit()
+    recipe_id=new_recipe.id
+    
+    ingredient_fields = request.form.getlist("ingredient")
+    ingredient_amt_fields = request.form.getlist("ingredient-amt")
+    ingredient_measure_fields = request.form.getlist("ingredient-measure")
+
+    for i in range(len(ingredient_fields)):
+        ingredient_name = ingredient_fields[i]
+        ingredient_amt=ingredient_amt_fields[i]
+        ingredient_measure=ingredient_measure_fields[i]
+        # Create and save the Ingredient entity
+        query = db.select(model.Ingredient).where(model.Ingredient.name == ingredient_name)
+        old_ingredient = db.session.execute(query).scalar_one_or_none()
+        if not old_ingredient:
+            new_ingredient = model.Ingredient(name=ingredient_name)
+            db.session.add(new_ingredient)
+            db.session.commit()
+            ingredient_id=new_ingredient.id
+        else:
+            ingredient_id=old_ingredient.id
+        new_qingredient = model.Qingredient(
+            ingredient_id=ingredient_id,
+            recipe_id=recipe_id, amount=ingredient_amt,measure=ingredient_measure)
+        db.session.add(new_qingredient)
+        db.session.commit()
+        step_fields = request.form.getlist("step")
+        for step_text in step_fields:
+        # Create and save the Step entity, linking it to the Recipe
+            new_step = model.Step(
+            text=step_text,
+            recipe_id=recipe_id
+            )
+            db.session.add(new_step)
+            db.session.commit()
+    return redirect(url_for("main.home"))
