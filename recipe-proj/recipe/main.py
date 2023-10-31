@@ -223,13 +223,13 @@ def recipeForm_post():
             recipe_id=recipe_id, amount=ingredient_amt,measure=ingredient_measure)
         db.session.add(new_qingredient)
         db.session.commit()
-        step_fields = request.form.getlist("step")
-        for step_text in step_fields:
+    step_fields = request.form.getlist("step")
+    for step_text in step_fields:
         # Create and save the Step entity, linking it to the Recipe
-            new_step = model.Step(
-            text=step_text,
-            recipe_id=recipe_id
-            )
-            db.session.add(new_step)
-            db.session.commit()
+        new_step = model.Step(
+        text=step_text,
+        recipe_id=recipe_id
+        )
+        db.session.add(new_step)
+        db.session.commit()
     return redirect(url_for("main.home"))
