@@ -13,7 +13,7 @@ def create_app(test_config=None):
     # A secret for signing session cookies
     # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqldb://24_webapp_054:yWlbH58e@mysql.lab.it.uc3m.es/24_webapp_054a"
     app.config["SECRET_KEY"] = "93220d9b340cf9a6c39bac99cce7daf220167498f91fa"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///recipeproj.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///recipe.db"
     db.init_app(app)
 
     login_manager = LoginManager()
