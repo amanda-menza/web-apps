@@ -13,7 +13,7 @@ class FollowingAssociation(db.Model):
     followed_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
     )
-class User(flask_login.UsaerMixin, db.Model):
+class User(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128), unique=True, nullable=False)
     name = db.Column(db.String(64), nullable=False)
@@ -71,7 +71,7 @@ class Step(db.Model):
     recipe=db.relationship('Recipe', back_populates='steps')
     text=db.Column(db.String(512), nullable=False)
 
-class Rating(db.model):
+class Rating(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='ratings')
