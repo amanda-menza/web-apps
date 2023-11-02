@@ -1,5 +1,9 @@
 {% extends 'base.html' %} {% block content %}
-<form class="recipe-form" action="" method="POST">
+<form
+  class="recipe-form"
+  action="{{ url_for('main.recipeForm') }}"
+  method="POST"
+>
   <div>
     <label>Title: <input type="text" name="title" required /></label>
   </div>
@@ -76,16 +80,45 @@
 <script>
   // Insert your JavaScript code here
   document.addEventListener("DOMContentLoaded", function () {
-    const ingredientsTemplate = document.querySelector(".ingredientsTemplate");
-    const stepsTemplate = document.querySelector(".stepsTemplate");
+    const ingredientsTemplate = document.createElement("div");
+    ingredientsTemplate.className = "ingredientsTemplate";
+    ingredientsTemplate.innerHTML = `
+      <label>Ingredient: <input type="text" name="ingredient" required /></label>
+      <label>Quantity: <input type="number" name="ingredient-amt" required /></label>
+      <input type="text" id="ingredient-measure" name="ingredient-measure" list="measureOptions" required />
+      <datalist id="measureOptions">
+        <option value="teaspoon(s)"></option>
+        <option value="tablespoon(s)"></option>
+        <option value="ounce(s)"></option>
+        <option value="fl. ounce(s)"></option>
+        <option value="cup(s)"></option>
+        <option value="pint(s)"></option>
+        <option value="quart(s)"></option>
+        <option value="gallon(s)"></option>
+        <option value="gram(s)"></option>
+        <option value="kilogram(s)"></option>
+        <option value="milligram(s)"></option>
+        <option value="pound(s)"></option>
+        <option value="milliliter(s)"></option>
+        <option value="liter(s)"></option>
+        <option value="pinch(es)"></option>
+      </datalist>
+    `;
+
+    const stepsTemplate = document.createElement("div");
+    stepsTemplate.className = "stepsTemplate";
+    stepsTemplate.innerHTML = `
+    <div class="stepsTemplate">
+      <input type="text" name="step" placeholder="Step" required />
+    </div>
+    `;
 
     document
       .getElementById("addIngredient")
       .addEventListener("click", function () {
-        const clonedIngredientsTemplate = ingredientsTemplate.cloneNode(true);
         document
           .querySelector(".ingredientsContainer")
-          .appendChild(clonedIngredientsTemplate);
+          .appendChild(ingredientsTemplate);
       });
 
     document.getElementById("addStep").addEventListener("click", function () {

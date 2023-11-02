@@ -62,7 +62,7 @@ class Qingredient(db.Model):
     ingredient=db.relationship("Ingredient", back_populates="qingredients")
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='qingredients')
-    amount=db.Column(db.Double, nullable=False)
+    amount=db.Column(db.Float, nullable=False)
     measure=db.Column(db.String(64), nullable=False)
 
 class Step(db.Model):
@@ -85,6 +85,7 @@ class Photo(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='photos')
     file_extension = db.Column(db.String(8), nullable=False)
+    # timestamp = db.Column(db.DateTime(), nullable=False)
 
 class Bookmark(db.Model):
     id=db.Column(db.Integer, primary_key=True)

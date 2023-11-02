@@ -1,1 +1,80 @@
-{% extends 'base.html' %} {% block content %} {% endblock %}
+{% extends 'base.html' %} {% block content %}
+<div id="navbar">
+  <h3>Feed</h3>
+
+  {% if current_user.is_authenticated: %}
+  <div id="profile">
+    <a href="{{ url_for('main.userView', user_id=current_user.id) }}"
+      >My Profile</a
+    >
+    <form action="{{ url_for('main.recipeForm') }}" method="get">
+      <button class="btn"><i class="fa fa-plus-circle"></i> New Recipe</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+<section class="feedContainer">
+  {% if current_user.is_authenticated: %}
+  <div class="btn-group">
+    <button class="button" id="latest">Latest</button>
+    <button class="button" id="followers">Followers</button>
+    <button class="button" id="bookmarked">Bookmarked</button>
+    <button class="button" id="rated">Highest Rated</button>
+  </div>
+  {% endif %}
+  <div class="feedTitle">Latest posts</div>
+  <div class="feedContent">
+    {% for post in timeFeed %} {% include 'post_template.html' %} {% endfor %}
+  </div>
+</section>
+{% if login: %}
+<script>
+  // function includePostTemplate(list) {
+  //   const postTemplate = ` {% for post in list %} {% include 'post_template.html' %} {% endfor %}`;
+  //   return postTemplate;
+  // }
+  function includePostTemplate(list) {
+    const postTemplate = `{% for post in list %}{% include 'post_template.html' %}{% endfor %}`;
+    return postTemplate;
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("latest").addEventListener("click", function () {
+      const feedTitle = document.querySelector(".feedTitle");
+      feedTitle.textContent = "Latest posts"; // Change the text
+      const feedContent = document.querySelector(".feedContent");
+      // feedContent.innerHTML = ""; // Clear the content
+      // Loop through the 'timeFeed' and include the template
+      feedContent.innerHTML = "";
+      // Loop through the 'timeFeed' and include the template
+      feedContent.innerHTML = includePostTemplate(timeFeed);
+    });
+    document.getElementById("followers").addEventListener("click", function () {
+      const feedTitle = document.querySelector(".feedTitle");
+      feedTitle.textContent = "Latest posts from the people you follow"; // Change the text
+      const feedContent = document.querySelector(".feedContent");
+      feedContent.innerHTML = ""; // Clear the content
+      // Loop through the 'followerFeed' and include the template
+      feedContent.innerHTML = includePostTemplate(followerFeed);
+    });
+    document
+      .getElementById("bookmarked")
+      .addEventListener("click", function () {
+        const feedTitle = document.querySelector(".feedTitle");
+        feedTitle.textContent = "Latest bookmarked posts"; // Change the text
+        const feedContent = document.querySelector(".feedContent");
+        feedContent.innerHTML = ""; // Clear the content
+        // Loop through the 'bookmarkFeed' and include the template
+        feedContent.innerHTML += includePostTemplate(bookmarkFeed);
+      });
+
+    document.getElementById("rated").addEventListener("click", function () {
+      const feedTitle = document.querySelector(".feedTitle");
+      feedTitle.textContent = "Highest rated posts"; // Change the text
+      const feedContent = document.querySelector(".feedContent");
+      feedContent.innerHTML = ""; // Clear the content
+      // Loop through the 'ratingFeed' and include the template
+      feedContent.innerHTML += includePostTemplate(ratingFeed);
+    });
+  });
+</script>
+{% endif %} {% endblock %}

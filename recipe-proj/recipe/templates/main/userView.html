@@ -1,1 +1,46 @@
-{% extends 'base.html' %} {% block content %} {% endblock %}
+{% extends 'base.html' %} {% block content %}
+<header>
+  <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i></a>
+  <h3 class="headText">Profile</h3>
+</header>
+<section id="sectionContainer">
+  <span class="info">
+    {% if current_user.is_authenticated: %}
+    <h2 class="text">{{user.name}}</h2>
+    {% endif %}
+  </span>
+  <span class="followings">
+    <table>
+      <tr>
+        <th class="followtext">
+          <a href="{{ url_for('main.followingView', user_id=user.id) }}"
+            >Following</a
+          >
+        </th>
+        <th class="followtext">
+          <a href="{{ url_for('main.followersView', user_id=user.id) }}"
+            >Followers</a
+          >
+        </th>
+      </tr>
+      <tr>
+        <td>{{user.following|length}}</td>
+        <td>{{user.followers|length}}</td>
+      </tr>
+    </table>
+    {% if followBtn == "follow" %}
+    <form action="{{ url_for('main.follow', user_id=user.id) }}" method="post">
+      <button class="followBtn"><i class="fa fa-plus"></i> Follow</button>
+    </form>
+    {% endif %} {%if followBtn == "unfollow" %}
+    <form
+      action="{{ url_for('main.unfollow', user_id=user.id) }}"
+      method="post"
+    >
+      <button class="followBtn"><i class="fa fa-plus"></i> Unfollow</button>
+    </form>
+    {% endif %}
+  </span>
+</section>
+
+{% endblock %}

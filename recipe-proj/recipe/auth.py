@@ -50,7 +50,7 @@ def login_post():
     if user and bcrypt.check_password_hash(user.password, password):
         flask_login.login_user(user)
  
-        return redirect(url_for("main.index"))
+        return redirect(url_for("main.home"))
     else:
         flash("Wrong email or password.")
     return redirect(url_for("auth.login"))

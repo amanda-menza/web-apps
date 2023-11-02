@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+<header>
+  <a href="{{ url_for('main.userView', user_id=user.id) }}"
+    ><i class="fa fa-arrow-left"></i
+  ></a>
+  <h3 class="headText">Profile</h3>
+</header>
+{% for follow in follows %}{% include 'follows_template.html' %} {% endfor %}{%
+endblock %}

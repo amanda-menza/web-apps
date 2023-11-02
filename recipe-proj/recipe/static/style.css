@@ -1,0 +1,64 @@
+body {
+  margin-bottom: 70px;
+}
+#navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  align-items: center;
+  font-family: "Copperplate", fantasy;
+}
+
+.btn-group .button {
+  background-color: lightblue;
+  border: 1px solid black;
+  color: black;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  cursor: pointer;
+  float: left;
+  border-radius: 2px;
+}
+.feedTitle {
+  text-align: center;
+  clear: both;
+}
+
+.btn-group .button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+.btn-group .button:hover {
+  background-color: darkgray;
+}
+
+.postFeed {
+  border: 1px solid black;
+  padding: 15px;
+  width: 40%;
+  margin: auto;
+  background: white;
+  color: black;
+  margin-top: 5px;
+}
+
+footer {
+  background-color: black;
+  color: white;
+  font-family: "Copperplate", fantasy;
+  background-attachment: scroll;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  padding-top: 20px;
+  padding-left: 15px;
+}

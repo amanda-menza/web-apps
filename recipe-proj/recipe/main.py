@@ -1,7 +1,8 @@
 import datetime
+import pathlib
 import dateutil.tz
 from . import db, bcrypt
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, current_app, flash, redirect, render_template, request, url_for
 import flask_login
 from flask_login import current_user
 
@@ -16,7 +17,9 @@ bp = Blueprint("main", __name__)
 def home():
     followerFeed=None;
     bookmarkFeed=None;
+    login=False;
     if flask_login:
+        login=True;
         followers = db.aliased(model.User)
         query1 = (
         db.select(model.Recipe)
@@ -28,7 +31,7 @@ def home():
         )
         followerFeed = db.session.execute(query1).scalars().all()
         query2=(
-        db.select(model.Recipe).where(model.Recipe.bookmarks.user.id==flask_login.current_user.id)
+        db.select(model.Recipe).join(model.Bookmark, model.Recipe.id==model.Bookmark.recipe_id).filter(flask_login.current_user.id==model.Bookmark.user_id).order_by(model.Recipe.timestamp.desc())
         .order_by(model.Recipe.timestamp.desc())
         .limit(10)
         )
@@ -39,26 +42,27 @@ def home():
     )
     timeFeed=db.session.execute(query3).scalars().all()
     query4= (
-    db.select(model.Recipe).order_by(model.Recipe.ratings.value==True)
+    db.select(model.Recipe).join(model.Rating, model.Recipe.id==model.Rating.recipe_id).order_by(model.Rating.value==True)
     .limit(10)
     )
     ratingFeed=db.session.execute(query4).scalars().all()
 
 ## would each of these feeds be part of different controllers or html templates
-    return render_template("main/home.html", timeFeed=timeFeed, ratingFeed=ratingFeed, followerFeed=followerFeed, bookmarkFeed=bookmarkFeed)
+    return render_template("main/home.html", timeFeed=timeFeed, ratingFeed=ratingFeed, followerFeed=followerFeed, bookmarkFeed=bookmarkFeed, login=login)
 
 @bp.route("/recipeView/<int:recipe_id>")
 def recipeView(recipe_id):
     recipe = db.session.get(model.Recipe, recipe_id)
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
-    query = db.select(model.Photo).where(model.Photo.recipe == recipe).order_by(model.Photo.timestamp.desc())
+    query = db.select(model.Photo).where(model.Photo.recipe == recipe)
+    # .order_by(model.Photo.timestamp.desc())
     photos = db.session.execute(query).scalars().all()
     authenticated=False;
     if flask_login:
         authenticated=True
 
-    return render_template("main/recipeView.html", recipe=recipe, photos=photos, authenticated=authenticated)
+    return render_template("main/recipeView.html", post=recipe, photos=photos, authenticated=authenticated)
 
 @bp.route("/photo_upload/<int:recipe_id>", methods=["POST"])
 @flask_login.login_required
@@ -84,6 +88,14 @@ def photo_upload(recipe_id):
         db.session.commit()
     else:
         abort(400,f"Missing file")
+    path = (
+    pathlib.Path(current_app.root_path)
+    / "static"
+    / "photos"
+    / f"photo-{photo.id}.{file_extension}"
+    )
+    uploaded_file.save(path)
+
     
     return redirect(url_for("main.recipeView", recipe_id=recipe.id))
 
@@ -113,7 +125,8 @@ def userView(user_id):
     user = db.session.get(model.User, user_id)
     if not user:
         abort(404, "User id {} doesn't exist.".format(user_id))
-    query1 = db.select(model.Photo).where(model.Photo.user == user).order_by(model.Photo.timestamp.desc())
+    query1 = db.select(model.Photo).where(model.Photo.user == user)
+    # .order_by(model.Photo.timestamp.desc())
     photos = db.session.execute(query1).scalars().all()
     query2 = db.select(model.Recipe).where(model.Recipe.user == user).order_by(model.Recipe.timestamp.desc())
     recipes = db.session.execute(query2).scalars().all()
@@ -124,7 +137,7 @@ def userView(user_id):
     if flask_login:
         authenticated=True
         if current_user.id==user_id:
-            query3 = db.select(model.Recipe).where(model.Recipe.bookmarks.user == user).order_by(model.Recipe.timestamp.desc())
+            query3 = db.select(model.Recipe).join(model.Bookmark, model.Recipe.id==model.Bookmark.recipe_id).filter(current_user.id==model.Bookmark.user_id).order_by(model.Recipe.timestamp.desc())
             bookmarks = db.session.execute(query3).scalars().all()
             followBtn=None;
         elif flask_login.current_user in user.followers:
@@ -132,7 +145,7 @@ def userView(user_id):
         else :
             followBtn="follow"
     
-    return render_template("main/userView.html", recipes=recipes, photos=photos, authenticated=authenticated, followBtn=followBtn, bookmarks=bookmarks)
+    return render_template("main/userView.html", recipes=recipes, photos=photos, authenticated=authenticated, followBtn=followBtn, bookmarks=bookmarks, user=user)
 
 @bp.route("/follow/<int:user_id>", methods=["POST"])
 @flask_login.login_required
@@ -195,10 +208,10 @@ def recipeForm_post():
     description = request.form.get("description")
     servings = request.form.get("servings")
     cookTime=request.form.get("cooking-time")
-    new_recipe = model.Recipe(title=title, user=current_user,description=description, servings=servings, cooktime=cookTime)
+    new_recipe = model.Recipe(title=title, user=current_user,description=description, servings=servings, cooktime=cookTime,timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
     db.session.add(new_recipe)
     db.session.commit()
-    recipe_id=new_recipe.id
+    
     
     ingredient_fields = request.form.getlist("ingredient")
     ingredient_amt_fields = request.form.getlist("ingredient-amt")
@@ -220,7 +233,7 @@ def recipeForm_post():
             ingredient_id=old_ingredient.id
         new_qingredient = model.Qingredient(
             ingredient_id=ingredient_id,
-            recipe_id=recipe_id, amount=ingredient_amt,measure=ingredient_measure)
+            recipe_id=new_recipe.id, amount=ingredient_amt,measure=ingredient_measure)
         db.session.add(new_qingredient)
         db.session.commit()
     step_fields = request.form.getlist("step")
@@ -228,7 +241,7 @@ def recipeForm_post():
         # Create and save the Step entity, linking it to the Recipe
         new_step = model.Step(
         text=step_text,
-        recipe_id=recipe_id
+        recipe_id=new_recipe.id
         )
         db.session.add(new_step)
         db.session.commit()

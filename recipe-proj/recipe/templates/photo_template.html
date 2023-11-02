@@ -1,0 +1,14 @@
+<div class="postFeed">
+  <div class="user-info">
+    <a href="{{ url_for('main.userView', user_id=post.user.id) }}"
+      ><div class="user-info">@{{ post.user.name }}</div></a
+    >
+  </div>
+  <figure>
+    <img
+      class="post-img"
+      src="static/photos/photo-{{photo.id}}.{{photo.file_extension}}"
+      alt="Instagram Post"
+    />
+  </figure>
+</div>
