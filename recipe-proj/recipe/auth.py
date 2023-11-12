@@ -59,4 +59,4 @@ def login_post():
 def logout():
    user=current_user
    flask_login.logout_user()
-   return redirect(url_for("auth.login"))
+   return redirect(url_for("main.home"))

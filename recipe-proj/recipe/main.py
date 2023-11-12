@@ -62,9 +62,10 @@ def recipeView(recipe_id):
     bookmarked=False
     rated=False
     recipeView=True
-    user=db.session.get(model.User, current_user.id)
-    if flask_login:
+    
+    if current_user.is_authenticated:
         login=True
+        user=db.session.get(model.User, current_user.id)
         query1=db.select(model.Bookmark).where(model.Bookmark.user_id==current_user.id).where(model.Bookmark.recipe_id==recipe_id)
         bookmarkQuery=db.session.execute(query1).scalars().all()
         if bookmarkQuery is not None:
@@ -151,7 +152,7 @@ def userView(user_id):
     selfProfile=False
     followBtn=None;
     bookmarks=None;
-    if flask_login:
+    if current_user.is_authenticated:
         authenticated=True
         if current_user.id==user_id:
             query3 = db.select(model.Recipe).join(model.Bookmark, model.Recipe.id==model.Bookmark.recipe_id).filter(current_user.id==model.Bookmark.user_id).order_by(model.Recipe.timestamp.desc())
@@ -177,7 +178,7 @@ def follow(user_id):
     user.followers.append(flask_login.current_user)
     db.session.commit()
     
-    return render_template("main/userView.html", user=user)
+    return redirect(url_for("main.userView", user_id=user_id))
 
 @bp.route("/unfollow/<int:user_id>", methods=["POST"])
 @flask_login.login_required
@@ -192,7 +193,7 @@ def unfollow(user_id):
     user.followers.remove(flask_login.current_user)
     db.session.commit()
     
-    return render_template("main/userView.html", user=user)
+    return redirect(url_for("main.userView", user_id=user_id))
 
 @bp.route("/followingView/<int:user_id>")
 @flask_login.login_required

@@ -44,17 +44,20 @@
   <div class="btn-group">
     <button class="button" id="profile-recipes">Recipes</button>
     <button class="button" id="profile-photos">Photos</button>
+    {% if authenticated %}
     <button class="button" id="profile-bookmarks">Bookmarks</button>
+    {% endif %}
   </div>
   <div class="feedTitle">User Recipes</div>
   <div id="recipeFeed">
     {% for post in recipes %} {% include 'post_template.html' %} {% endfor %}
   </div>
   <div id="photoFeed">
-    {% for post in photos %} {% include 'photo_template.html' %} {% endfor %}
+    {% for photo in photos %} {% include 'photo_template.html' %} {% endfor %}
   </div>
   <div id="bookmarkFeed">
-    {% for post in bookmarks %} {% include 'post_template.html' %} {% endfor %}
+    {% if bookmarks %} {% for post in bookmarks %} {% include
+    'post_template.html' %} {% endfor %}{% endif %}
   </div>
 </section>
 
@@ -64,7 +67,7 @@
       .getElementById("profile-recipes")
       .addEventListener("click", function () {
         const feedTitle = document.querySelector(".feedTitle");
-        feedTitle.textContent = "User's Recipes";
+        feedTitle.textContent = "User Recipes";
         document.getElementById("recipeFeed").style.display = "block";
         document.getElementById("photoFeed").style.display = "none";
         document.getElementById("bookmarkFeed").style.display = "none";
@@ -74,7 +77,7 @@
       .getElementById("profile-photos")
       .addEventListener("click", function () {
         const feedTitle = document.querySelector(".feedTitle");
-        feedTitle.textContent = "User's Photos";
+        feedTitle.textContent = "User Photos";
         document.getElementById("recipeFeed").style.display = "none";
         document.getElementById("photoFeed").style.display = "block";
         document.getElementById("bookmarkFeed").style.display = "none";
@@ -84,7 +87,7 @@
       .getElementById("profile-bookmarks")
       .addEventListener("click", function () {
         const feedTitle = document.querySelector(".feedTitle");
-        feedTitle.textContent = "User's bookmarks";
+        feedTitle.textContent = "User bookmarks";
         document.getElementById("recipeFeed").style.display = "none";
         document.getElementById("photoFeed").style.display = "none";
         document.getElementById("bookmarkFeed").style.display = "block";
