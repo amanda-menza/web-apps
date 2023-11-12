@@ -15,10 +15,11 @@ bp = Blueprint("main", __name__)
 @bp.route("/")
 
 def home():
-    followerFeed=None;
-    bookmarkFeed=None;
-    login=False;
-    if flask_login:
+    followerFeed=[];
+    bookmarkFeed=[];
+    login=False
+    recipeView=False
+    if flask_login.current_user.is_authenticated:
         login=True;
         followers = db.aliased(model.User)
         query1 = (
@@ -27,23 +28,22 @@ def home():
         .join(followers, model.User.followers)
         .where(followers.id == flask_login.current_user.id)
         .order_by(model.Recipe.timestamp.desc())
-        .limit(10)
         )
         followerFeed = db.session.execute(query1).scalars().all()
         query2=(
         db.select(model.Recipe).join(model.Bookmark, model.Recipe.id==model.Bookmark.recipe_id).filter(flask_login.current_user.id==model.Bookmark.user_id).order_by(model.Recipe.timestamp.desc())
         .order_by(model.Recipe.timestamp.desc())
-        .limit(10)
+       
         )
         bookmarkFeed = db.session.execute(query2).scalars().all()
     query3= (
     db.select(model.Recipe).order_by(model.Recipe.timestamp.desc())
-    .limit(10)
+   
     )
     timeFeed=db.session.execute(query3).scalars().all()
     query4= (
     db.select(model.Recipe).join(model.Rating, model.Recipe.id==model.Rating.recipe_id).order_by(model.Rating.value==True)
-    .limit(10)
+   
     )
     ratingFeed=db.session.execute(query4).scalars().all()
 
@@ -58,11 +58,23 @@ def recipeView(recipe_id):
     query = db.select(model.Photo).where(model.Photo.recipe == recipe)
     # .order_by(model.Photo.timestamp.desc())
     photos = db.session.execute(query).scalars().all()
-    authenticated=False;
+    login=False
+    bookmarked=False
+    rated=False
+    recipeView=True
+    user=db.session.get(model.User, current_user.id)
     if flask_login:
-        authenticated=True
+        login=True
+        query1=db.select(model.Bookmark).where(model.Bookmark.user_id==current_user.id).where(model.Bookmark.recipe_id==recipe_id)
+        bookmarkQuery=db.session.execute(query1).scalars().all()
+        if bookmarkQuery is not None:
+            bookmarked=True
+        query2=db.select(model.Rating).where(model.Rating.user_id==current_user.id).where(model.Rating.recipe_id==recipe_id)
+        rateQuery=db.session.execute(query2).scalars().all()
+        if rateQuery is not None:
+            rated=True
 
-    return render_template("main/recipeView.html", post=recipe, photos=photos, authenticated=authenticated)
+    return render_template("main/recipeView.html", post=recipe, photos=photos, login=login, rated=rated, bookmarked=bookmarked, recipeView=recipeView)
 
 @bp.route("/photo_upload/<int:recipe_id>", methods=["POST"])
 @flask_login.login_required
@@ -99,11 +111,16 @@ def photo_upload(recipe_id):
     
     return redirect(url_for("main.recipeView", recipe_id=recipe.id))
 
-@bp.route("/rate/<int:recipe_id>", methods=["POST"])
+@bp.route("/ratingForm/<int:recipe_id>", methods=["GET"])
 @flask_login.login_required
-def rate(recipe_id):
-    rateVal = request.form.get("value")#should be boolean up or down
-    recipe=db.session.get(model.recipe, recipe_id)
+def ratingForm(recipe_id):
+    return render_template("ratingForm.html", recipe_id=recipe_id)
+
+@bp.route("/ratingForm/<int:recipe_id>", methods=["POST"])
+@flask_login.login_required
+def ratingForm_post(recipe_id):
+    rateVal = request.form.get("star")
+    recipe=db.session.get(model.Recipe, recipe_id)
     rating=model.Rating(user=current_user, value=rateVal, recipe=recipe,)
     db.session.add(rating)
     db.session.commit()
@@ -113,8 +130,8 @@ def rate(recipe_id):
 @bp.route("/bookmark/<int:recipe_id>", methods=["POST"])
 @flask_login.login_required
 def bookmark(recipe_id):
-    recipe=db.session.get(model.recipe, recipe_id)
-    bookmark=model.Rating(user=current_user, recipe=recipe,)
+    recipe=db.session.get(model.Recipe, recipe_id)
+    bookmark=model.Bookmark(user=current_user, recipe=recipe,)
     db.session.add(bookmark)
     db.session.commit()
     
@@ -246,3 +263,9 @@ def recipeForm_post():
         db.session.add(new_step)
         db.session.commit()
     return redirect(url_for("main.home"))
+
+@bp.route("/bookmarkView/<list>")
+@flask_login.login_required
+def bookmarkView(list):
+    return render_template("bookmarked.html", bookmarkFeed=list)
+    

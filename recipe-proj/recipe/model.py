@@ -35,6 +35,7 @@ class User(flask_login.UserMixin, db.Model):
     )
     photos=db.relationship('Photo', back_populates='user')
     bookmarks=db.relationship('Bookmark', back_populates='user')
+    ratings=db.relationship('Rating', back_populates='user')
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,6 +51,16 @@ class Recipe(db.Model):
     responses = db.relationship('Photo', back_populates='recipe')
     bookmarks=db.relationship('Bookmark', back_populates='recipe')
     ratings=db.relationship('Rating', back_populates='recipe')
+    def calculate_average_rating(self):
+        if not self.ratings:
+            return 0.0  # Return 0 if there are no ratings
+
+        total_rating = 0
+        for rating in self.ratings:
+            total_rating += rating.value
+
+        average_rating = total_rating / len(self.ratings)
+        return average_rating
     
 class Ingredient(db.Model):
     id=db.Column(db.Integer, primary_key=True)
@@ -75,8 +86,9 @@ class Rating(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='ratings')
+    user = db.relationship('User', back_populates='ratings')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    value=db.Column(db.Boolean, nullable=False)
+    value=db.Column(db.Integer, nullable=False)
 
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

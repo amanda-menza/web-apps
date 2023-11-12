@@ -7,7 +7,7 @@
   <figure>
     <img
       class="post-img"
-      src="static/photos/photo-{{photo.id}}.{{photo.file_extension}}"
+      src="{{ url_for('static', filename='photos/photo-' ~ photo.id ~ '.' ~ photo.file_extension) }}"
       alt="Instagram Post"
     />
   </figure>

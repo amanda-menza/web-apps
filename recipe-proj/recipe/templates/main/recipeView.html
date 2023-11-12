@@ -6,6 +6,7 @@
   {% include 'post_template.html' %}
   <div class="commentsTitle">
     <h3 class="commentsTitle">Photos</h3>
+    {% if login %}
     <form
       method="post"
       enctype="multipart/form-data"
@@ -17,6 +18,7 @@
         <i class="fa fa-camera"></i> Submit Photo
       </button>
     </form>
+    {% endif %}
   </div>
 
   {% for photo in photos %} {% include 'photo_template.html' %} {% endfor %}

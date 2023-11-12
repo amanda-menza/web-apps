@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block content %}
+<h2 class="formTitle">Your Rating</h2>
+<form
+  class="ratingForm"
+  action="{{ url_for('main.ratingForm', recipe_id=recipe_id) }}"
+  method="post"
+>
+  <div>
+    <label>
+      <input type="radio" name="star" value="1" />1<i class="fa fa-star"></i
+    ></label>
+  </div>
+  <div>
+    <label>
+      <input type="radio" name="star" value="2" />2<i class="fa fa-star"></i
+    ></label>
+  </div>
+  <div>
+    <label>
+      <input type="radio" name="star" value="3" />3<i class="fa fa-star"></i
+    ></label>
+  </div>
+  <div>
+    <label>
+      <input type="radio" name="star" value="4" />4<i class="fa fa-star"></i
+    ></label>
+  </div>
+  <div>
+    <label>
+      <input type="radio" name="star" value="5" />5<i class="fa fa-star"></i
+    ></label>
+  </div>
+  <div><input type="submit" value="Submit Rating" /></div>
+</form>
+{%endblock %}

@@ -23,6 +23,12 @@
         ><small>Logout</small></a
       >
     </div>
+    {% else %}
+    <div>
+      <a class="log" href="{{ url_for('auth.login') }}"
+        ><small>Log In</small></a
+      >
+    </div>
     {% endif %}
   </header>
 

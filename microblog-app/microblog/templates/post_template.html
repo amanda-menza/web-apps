@@ -1,14 +1,19 @@
-<div class="postFeed">
-  <a href="{{ url_for('main.profileIndex', user_id=post.user.id) }}"
-    ><div class="user-info">{{ post.user.email }}</div></a
-  >
-  <div>{{post.text}}</div>
-  <div class="actions">
-    <button class="like-btn"><i class="fa fa-heart"></i> Like</button>
-    {% if post.response_to is none %}
-    <a href="{{ url_for('main.messageIndex', message_id=post.id) }}"
-      ><button>View Post</button></a
-    >
+{% if post.response_to is none %}
+<div class="postFeed original" data-message-id="{{ post.id }}">
+  {% else %}
+  <div class="postFeed response">
     {% endif %}
+    <a href="{{ url_for('main.profileIndex', user_id=post.user.id) }}"
+      ><div class="user-info">{{ post.user.email }}</div></a
+    >
+    <div>{{post.text}}</div>
+    <div class="actions">
+      <button class="like-btn"><i class="fa fa-heart"></i> Like</button>
+      {% if post.response_to is none %}
+      <a href="{{ url_for('main.messageIndex', message_id=post.id) }}"
+        ><button>View Post</button></a
+      >
+      {% endif %}
+    </div>
   </div>
 </div>

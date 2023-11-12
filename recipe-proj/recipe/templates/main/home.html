@@ -14,66 +14,74 @@
   </div>
 </div>
 <section class="feedContainer">
-  {% if current_user.is_authenticated: %}
   <div class="btn-group">
     <button class="button" id="latest">Latest</button>
+    <button class="button" id="rated">Highest Rated</button>
+    {% if current_user.is_authenticated: %}
     <button class="button" id="followers">Followers</button>
     <button class="button" id="bookmarked">Bookmarked</button>
-    <button class="button" id="rated">Highest Rated</button>
+
+    {% endif %}
   </div>
-  {% endif %}
   <div class="feedTitle">Latest posts</div>
   <div class="feedContent">
-    {% for post in timeFeed %} {% include 'post_template.html' %} {% endfor %}
+    <div id="timeFeed">
+      {% for post in timeFeed %} {% include 'post_template.html' %} {% endfor %}
+    </div>
+    <div id="bookmarkFeed">
+      {% for post in bookmarkFeed %} {% include 'post_template.html' %} {%
+      endfor %}
+    </div>
+    <div id="followerFeed">
+      {% for post in followerFeed %} {% include 'post_template.html' %} {%
+      endfor %}
+    </div>
+    <div id="ratingFeed">
+      {% for post in ratingFeed %} {% include 'post_template.html' %} {% endfor
+      %}
+    </div>
   </div>
 </section>
 {% if login: %}
 <script>
-  // function includePostTemplate(list) {
-  //   const postTemplate = ` {% for post in list %} {% include 'post_template.html' %} {% endfor %}`;
-  //   return postTemplate;
-  // }
-  function includePostTemplate(list) {
-    const postTemplate = `{% for post in list %}{% include 'post_template.html' %}{% endfor %}`;
-    return postTemplate;
-  }
   document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("latest").addEventListener("click", function () {
       const feedTitle = document.querySelector(".feedTitle");
-      feedTitle.textContent = "Latest posts"; // Change the text
-      const feedContent = document.querySelector(".feedContent");
-      // feedContent.innerHTML = ""; // Clear the content
-      // Loop through the 'timeFeed' and include the template
-      feedContent.innerHTML = "";
-      // Loop through the 'timeFeed' and include the template
-      feedContent.innerHTML = includePostTemplate(timeFeed);
+      feedTitle.textContent = "Latest posts";
+      document.getElementById("timeFeed").style.display = "block";
+      document.getElementById("followerFeed").style.display = "none";
+      document.getElementById("bookmarkFeed").style.display = "none";
+      document.getElementById("ratingFeed").style.display = "none";
     });
+
     document.getElementById("followers").addEventListener("click", function () {
       const feedTitle = document.querySelector(".feedTitle");
-      feedTitle.textContent = "Latest posts from the people you follow"; // Change the text
-      const feedContent = document.querySelector(".feedContent");
-      feedContent.innerHTML = ""; // Clear the content
-      // Loop through the 'followerFeed' and include the template
-      feedContent.innerHTML = includePostTemplate(followerFeed);
+      feedTitle.textContent = "Latest posts from the people you follow";
+      document.getElementById("timeFeed").style.display = "none";
+      document.getElementById("followerFeed").style.display = "block";
+      document.getElementById("bookmarkFeed").style.display = "none";
+      document.getElementById("ratingFeed").style.display = "none";
     });
+
     document
       .getElementById("bookmarked")
       .addEventListener("click", function () {
         const feedTitle = document.querySelector(".feedTitle");
-        feedTitle.textContent = "Latest bookmarked posts"; // Change the text
-        const feedContent = document.querySelector(".feedContent");
-        feedContent.innerHTML = ""; // Clear the content
-        // Loop through the 'bookmarkFeed' and include the template
-        feedContent.innerHTML += includePostTemplate(bookmarkFeed);
+        feedTitle.textContent = "Latest bookmarked posts";
+        document.getElementById("timeFeed").style.display = "none";
+        document.getElementById("followerFeed").style.display = "none";
+        document.getElementById("bookmarkFeed").style.display = "block";
+        document.getElementById("ratingFeed").style.display = "none";
       });
 
     document.getElementById("rated").addEventListener("click", function () {
       const feedTitle = document.querySelector(".feedTitle");
-      feedTitle.textContent = "Highest rated posts"; // Change the text
-      const feedContent = document.querySelector(".feedContent");
-      feedContent.innerHTML = ""; // Clear the content
-      // Loop through the 'ratingFeed' and include the template
-      feedContent.innerHTML += includePostTemplate(ratingFeed);
+      feedTitle.textContent = "Highest rated posts";
+
+      document.getElementById("timeFeed").style.display = "none";
+      document.getElementById("followerFeed").style.display = "none";
+      document.getElementById("bookmarkFeed").style.display = "none";
+      document.getElementById("ratingFeed").style.display = "block";
     });
   });
 </script>

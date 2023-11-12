@@ -2,7 +2,7 @@
 get_flashed_messages() %} {% for message in messages %}
 <div class="notification">{{ message }}</div>
 {% endfor %} {% endwith %}
-<h2 class="login-signin">Log In</h2>
+<h2 class="formTitle">Log In</h2>
 <form class="inForm" action="{{ url_for('auth.login') }}" method="post">
   <div>
     <label>Email: <input type="email" name="email" required /></label>
