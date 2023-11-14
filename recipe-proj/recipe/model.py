@@ -1,7 +1,4 @@
-#ideas for extra functionality:
-#have followers for users, show followers in profile
-#can switch main view from main feed(maybe latest), to highest rated, to bookmarked, to followers only
-# show bookmarked recipes from profile
+
 
 from . import db
 import flask_login

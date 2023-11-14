@@ -1,7 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-<div class="goHome">
-  <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i></a>
-</div>
 <div class="viewPost">
   {% include 'post_template.html' %}
   <div class="commentsTitle">
@@ -14,7 +11,7 @@
     >
       <input type="file" name="photo" accept="image/jpeg,image/png" required />
       <input type="hidden" name="recipe_id" value="{{post.id}}" />
-      <button type="submit" class="btn">
+      <button type="submit" class="photo-btn">
         <i class="fa fa-camera"></i> Submit Photo
       </button>
     </form>

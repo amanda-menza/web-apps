@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <header>
-  <a href="{{ url_for('main.userView', user_id=user.id) }}"
+  <a class="profile-back" href="{{ url_for('main.userView', user_id=user.id) }}"
     ><label><i class="fa fa-arrow-left"></i> Profile</label></a
   >
 </header>

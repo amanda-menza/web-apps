@@ -1,22 +1,23 @@
 {% extends 'base.html' %} {% block content %}
-<header>
-  <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i></a>
-  <h3 class="headText">Profile</h3>
-</header>
-<section id="sectionContainer">
+<section class="profile-head">
   <span class="info">
-    <h2 class="text">{{user.name}}</h2>
+    <h3 class="text">Profile</h3>
+    <h2 class="text">@{{user.name}}</h2>
   </span>
   <span class="followings">
-    <table>
+    <table class="follow-table">
       <tr>
         <th class="followtext">
-          <a href="{{ url_for('main.followingView', user_id=user.id) }}"
+          <a
+            class="followtext"
+            href="{{ url_for('main.followingView', user_id=user.id) }}"
             >Following</a
           >
         </th>
         <th class="followtext">
-          <a href="{{ url_for('main.followersView', user_id=user.id) }}"
+          <a
+            class="followtext"
+            href="{{ url_for('main.followersView', user_id=user.id) }}"
             >Followers</a
           >
         </th>
@@ -28,19 +29,19 @@
     </table>
     {% if followBtn == "follow" %}
     <form action="{{ url_for('main.follow', user_id=user.id) }}" method="post">
-      <button class="followBtn"><i class="fa fa-plus"></i> Follow</button>
+      <button class="follow-btn"><i class="fa fa-plus"></i> Follow</button>
     </form>
     {% endif %} {%if followBtn == "unfollow" %}
     <form
       action="{{ url_for('main.unfollow', user_id=user.id) }}"
       method="post"
     >
-      <button class="followBtn"><i class="fa fa-plus"></i> Unfollow</button>
+      <button class="follow-btn"><i class="fa fa-plus"></i> Unfollow</button>
     </form>
     {% endif %}
   </span>
 </section>
-<section class="profileFeed">
+<section class="profileFeed-head">
   <div class="btn-group">
     <button class="button" id="profile-recipes">Recipes</button>
     <button class="button" id="profile-photos">Photos</button>
@@ -49,17 +50,17 @@
     {% endif %}
   </div>
   <div class="feedTitle">User Recipes</div>
-  <div id="recipeFeed">
-    {% for post in recipes %} {% include 'post_template.html' %} {% endfor %}
-  </div>
-  <div id="photoFeed">
-    {% for photo in photos %} {% include 'photo_template.html' %} {% endfor %}
-  </div>
-  <div id="bookmarkFeed">
-    {% if bookmarks %} {% for post in bookmarks %} {% include
-    'post_template.html' %} {% endfor %}{% endif %}
-  </div>
 </section>
+<div id="recipeFeed">
+  {% for post in recipes %} {% include 'post_template.html' %} {% endfor %}
+</div>
+<div id="photoFeed">
+  {% for photo in photos %} {% include 'photo_template.html' %} {% endfor %}
+</div>
+<div id="bookmarkFeed">
+  {% if bookmarks %} {% for post in bookmarks %} {% include 'post_template.html'
+  %} {% endfor %}{% endif %}
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -82,16 +83,17 @@
         document.getElementById("photoFeed").style.display = "block";
         document.getElementById("bookmarkFeed").style.display = "none";
       });
-
-    document
-      .getElementById("profile-bookmarks")
-      .addEventListener("click", function () {
-        const feedTitle = document.querySelector(".feedTitle");
-        feedTitle.textContent = "User bookmarks";
-        document.getElementById("recipeFeed").style.display = "none";
-        document.getElementById("photoFeed").style.display = "none";
-        document.getElementById("bookmarkFeed").style.display = "block";
-      });
+    if (!!document.getElementById("profile-bookmarks")) {
+      document
+        .getElementById("profile-bookmarks")
+        .addEventListener("click", function () {
+          const feedTitle = document.querySelector(".feedTitle");
+          feedTitle.textContent = "User bookmarks";
+          document.getElementById("recipeFeed").style.display = "none";
+          document.getElementById("photoFeed").style.display = "none";
+          document.getElementById("bookmarkFeed").style.display = "block";
+        });
+    }
   });
 </script>
 

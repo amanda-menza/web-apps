@@ -67,11 +67,11 @@ def recipeView(recipe_id):
         login=True
         user=db.session.get(model.User, current_user.id)
         query1=db.select(model.Bookmark).where(model.Bookmark.user_id==current_user.id).where(model.Bookmark.recipe_id==recipe_id)
-        bookmarkQuery=db.session.execute(query1).scalars().all()
+        bookmarkQuery=db.session.execute(query1).scalars().one_or_none()
         if bookmarkQuery is not None:
             bookmarked=True
         query2=db.select(model.Rating).where(model.Rating.user_id==current_user.id).where(model.Rating.recipe_id==recipe_id)
-        rateQuery=db.session.execute(query2).scalars().all()
+        rateQuery=db.session.execute(query2).scalars().one_or_none()
         if rateQuery is not None:
             rated=True
 
@@ -122,8 +122,13 @@ def ratingForm(recipe_id):
 def ratingForm_post(recipe_id):
     rateVal = request.form.get("star")
     recipe=db.session.get(model.Recipe, recipe_id)
-    rating=model.Rating(user=current_user, value=rateVal, recipe=recipe,)
-    db.session.add(rating)
+    existing_rating = db.session.query(model.Rating).filter_by(user=flask_login.current_user, recipe=recipe).first()
+    if existing_rating:
+        # Update the existing rating value
+        existing_rating.value = rateVal
+    else:
+        rating=model.Rating(user=current_user, value=rateVal, recipe=recipe)
+        db.session.add(rating)
     db.session.commit()
     
     return redirect(url_for("main.recipeView", recipe_id=recipe.id))
@@ -132,8 +137,20 @@ def ratingForm_post(recipe_id):
 @flask_login.login_required
 def bookmark(recipe_id):
     recipe=db.session.get(model.Recipe, recipe_id)
-    bookmark=model.Bookmark(user=current_user, recipe=recipe,)
+    bookmark=model.Bookmark(user=current_user, recipe=recipe)
     db.session.add(bookmark)
+    db.session.commit()
+    
+    return redirect(url_for("main.recipeView", recipe_id=recipe.id))
+
+@bp.route("/unbookmark/<int:recipe_id>", methods=["POST"])
+@flask_login.login_required
+def unbookmark(recipe_id):
+    recipe=db.session.get(model.Recipe, recipe_id)
+    user=flask_login.current_user
+    query = db.select(model.Bookmark).where(recipe_id == recipe_id).where(user==flask_login.current_user)
+    bookmark=db.session.execute(query).scalars().one_or_none()
+    db.session.delete(bookmark)
     db.session.commit()
     
     return redirect(url_for("main.recipeView", recipe_id=recipe.id))
@@ -265,8 +282,4 @@ def recipeForm_post():
         db.session.commit()
     return redirect(url_for("main.home"))
 
-@bp.route("/bookmarkView/<list>")
-@flask_login.login_required
-def bookmarkView(list):
-    return render_template("bookmarked.html", bookmarkFeed=list)
     

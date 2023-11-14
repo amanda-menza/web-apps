@@ -13,23 +13,26 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
-  <header>
+  <header class="main-head">
     {% if current_user.is_authenticated: %}
-    <div>
+    <span>
       <h4 class="username">@{{current_user.name}}</h4>
-    </div>
-    <div>
+    </span>
+    <span>
       <a class="log" href="{{ url_for('auth.logout') }}"
         ><small>Logout</small></a
       >
-    </div>
+    </span>
     {% else %}
-    <div>
+    <span>
       <a class="log" href="{{ url_for('auth.login') }}"
         ><small>Log In</small></a
       >
-    </div>
+    </span>
     {% endif %}
+    <a class="home-icon" href="{{ url_for('main.home') }}"
+      ><i class="fa fa-home"></i
+    ></a>
   </header>
 
   <body>

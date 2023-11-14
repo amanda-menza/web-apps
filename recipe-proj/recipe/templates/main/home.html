@@ -1,19 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<div id="navbar">
-  <h3>Feed</h3>
-
-  {% if current_user.is_authenticated: %}
-  <div id="profile">
-    <a href="{{ url_for('main.userView', user_id=current_user.id) }}"
-      >My Profile</a
-    >
-    <form action="{{ url_for('main.recipeForm') }}" method="get">
-      <button class="btn"><i class="fa fa-plus-circle"></i> New Recipe</button>
-    </form>
-    {% endif %}
-  </div>
-</div>
-<section class="feedContainer">
+<div class="navbar">
   <div class="btn-group">
     <button class="button" id="latest">Latest</button>
     <button class="button" id="rated">Highest Rated</button>
@@ -23,66 +9,86 @@
 
     {% endif %}
   </div>
-  <div class="feedTitle">Latest posts</div>
-  <div class="feedContent">
-    <div id="timeFeed">
-      {% for post in timeFeed %} {% include 'post_template.html' %} {% endfor %}
-    </div>
-    <div id="bookmarkFeed">
-      {% for post in bookmarkFeed %} {% include 'post_template.html' %} {%
-      endfor %}
-    </div>
-    <div id="followerFeed">
-      {% for post in followerFeed %} {% include 'post_template.html' %} {%
-      endfor %}
-    </div>
-    <div id="ratingFeed">
-      {% for post in ratingFeed %} {% include 'post_template.html' %} {% endfor
-      %}
-    </div>
+  <div class="feedTitle">Latest Posts</div>
+  {% if current_user.is_authenticated: %}
+  <div class="nav-right">
+    <span>
+      <form action="{{ url_for('main.recipeForm') }}" method="get">
+        <button class="home-newRec">
+          <i class="fa fa-plus-circle"></i> New Recipe
+        </button>
+      </form>
+    </span>
+    <span>
+      <a
+        href="{{ url_for('main.userView', user_id=current_user.id) }}"
+        class="home-profile"
+        >My Profile</a
+      >
+    </span>
   </div>
-</section>
-{% if login: %}
+  {% endif %}
+</div>
+<div class="feedContent">
+  <div id="time-feed">
+    {% for post in timeFeed %} {% include 'post_template.html' %} {% endfor %}
+  </div>
+  <div id="bookmark-feed">
+    {% for post in bookmarkFeed %} {% include 'post_template.html' %} {% endfor
+    %}
+  </div>
+  <div id="follower-feed">
+    {% for post in followerFeed %} {% include 'post_template.html' %} {% endfor
+    %}
+  </div>
+  <div id="rating-feed">
+    {% for post in ratingFeed %} {% include 'post_template.html' %} {% endfor %}
+  </div>
+</div>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("latest").addEventListener("click", function () {
       const feedTitle = document.querySelector(".feedTitle");
-      feedTitle.textContent = "Latest posts";
-      document.getElementById("timeFeed").style.display = "block";
-      document.getElementById("followerFeed").style.display = "none";
-      document.getElementById("bookmarkFeed").style.display = "none";
-      document.getElementById("ratingFeed").style.display = "none";
+      feedTitle.textContent = "Latest Posts";
+      document.getElementById("time-feed").style.display = "block";
+      document.getElementById("follower-feed").style.display = "none";
+      document.getElementById("bookmark-feed").style.display = "none";
+      document.getElementById("rating-feed").style.display = "none";
     });
-
-    document.getElementById("followers").addEventListener("click", function () {
-      const feedTitle = document.querySelector(".feedTitle");
-      feedTitle.textContent = "Latest posts from the people you follow";
-      document.getElementById("timeFeed").style.display = "none";
-      document.getElementById("followerFeed").style.display = "block";
-      document.getElementById("bookmarkFeed").style.display = "none";
-      document.getElementById("ratingFeed").style.display = "none";
-    });
-
-    document
-      .getElementById("bookmarked")
-      .addEventListener("click", function () {
-        const feedTitle = document.querySelector(".feedTitle");
-        feedTitle.textContent = "Latest bookmarked posts";
-        document.getElementById("timeFeed").style.display = "none";
-        document.getElementById("followerFeed").style.display = "none";
-        document.getElementById("bookmarkFeed").style.display = "block";
-        document.getElementById("ratingFeed").style.display = "none";
-      });
-
+    if (!!document.getElementById("followers")) {
+      document
+        .getElementById("followers")
+        .addEventListener("click", function () {
+          const feedTitle = document.querySelector(".feedTitle");
+          feedTitle.textContent = "Posts from Following";
+          document.getElementById("time-feed").style.display = "none";
+          document.getElementById("follower-feed").style.display = "block";
+          document.getElementById("bookmark-feed").style.display = "none";
+          document.getElementById("rating-feed").style.display = "none";
+        });
+    }
+    if (!!document.getElementById("bookmarked")) {
+      document
+        .getElementById("bookmarked")
+        .addEventListener("click", function () {
+          const feedTitle = document.querySelector(".feedTitle");
+          feedTitle.textContent = "Bookmarked Posts";
+          document.getElementById("time-feed").style.display = "none";
+          document.getElementById("follower-feed").style.display = "none";
+          document.getElementById("bookmark-feed").style.display = "block";
+          document.getElementById("rating-feed").style.display = "none";
+        });
+    }
     document.getElementById("rated").addEventListener("click", function () {
       const feedTitle = document.querySelector(".feedTitle");
-      feedTitle.textContent = "Highest rated posts";
+      feedTitle.textContent = "Highest Rated Posts";
 
-      document.getElementById("timeFeed").style.display = "none";
-      document.getElementById("followerFeed").style.display = "none";
-      document.getElementById("bookmarkFeed").style.display = "none";
-      document.getElementById("ratingFeed").style.display = "block";
+      document.getElementById("time-feed").style.display = "none";
+      document.getElementById("follower-feed").style.display = "none";
+      document.getElementById("bookmark-feed").style.display = "none";
+      document.getElementById("rating-feed").style.display = "block";
     });
   });
 </script>
-{% endif %} {% endblock %}
+{% endblock %}
