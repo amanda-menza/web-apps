@@ -4,15 +4,26 @@ body {
 }
 .log,
 .username {
+  justify-content: flex-start;
   color: #415d78;
   display: inline-block;
   margin-left: 10px;
   margin-bottom: 10px;
+  margin-top: 10px;
+}
+.logo-img {
+  width: 150px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  display: inline;
+  margin: 0 auto;
 }
 .main-head {
-  height: 40px;
+  height: 100px;
   border: 3px solid #415d78;
   margin-bottom: 4px;
+  display: flex;
 }
 
 .navbar {
@@ -26,12 +37,18 @@ body {
   align-items: center;
   height: 60px;
 }
-.navbar .feedTitle {
+.right-flex,
+.btn-group {
+  flex: 1;
+}
+.feedTitle-2 {
   margin-right: 290px;
   font-size: 18px;
+  font-weight: bold;
 }
 
-.btn-group .button {
+.btn-group .button,
+.btn-group-2 .button {
   background-color: #bdd5ea;
   border: 1px solid black;
   color: black;
@@ -42,7 +59,6 @@ body {
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  float: left;
   border-radius: 8px;
   margin: 3px;
 }
@@ -58,6 +74,7 @@ body {
   color: #415d78;
   margin: 10px;
   font-size: 20px;
+  justify-content: flex-start;
 }
 .home-newRec,
 .follow-btn,
@@ -70,9 +87,11 @@ body {
   display: inline;
 }
 .feedTitle {
-  text-align: center;
-  clear: both;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
   font-weight: bold;
+  font-size: 18px;
 }
 
 .btn-group .button:not(:last-child) {

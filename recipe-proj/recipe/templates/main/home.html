@@ -1,31 +1,39 @@
 {% extends 'base.html' %} {% block content %}
 <div class="navbar">
-  <div class="btn-group">
+  {% if current_user.is_authenticated: %}
+  <div class="btn-group-2">
     <button class="button" id="latest">Latest</button>
     <button class="button" id="rated">Highest Rated</button>
-    {% if current_user.is_authenticated: %}
     <button class="button" id="followers">Followers</button>
     <button class="button" id="bookmarked">Bookmarked</button>
+    {% else %}
+    <div class="btn-group">
+      <button class="button" id="latest">Latest</button>
+      <button class="button" id="rated">Highest Rated</button>
+      {% endif %}
+    </div>
 
-    {% endif %}
-  </div>
-  <div class="feedTitle">Latest Posts</div>
-  {% if current_user.is_authenticated: %}
-  <div class="nav-right">
-    <span>
-      <form action="{{ url_for('main.recipeForm') }}" method="get">
-        <button class="home-newRec">
-          <i class="fa fa-plus-circle"></i> New Recipe
-        </button>
-      </form>
-    </span>
-    <span>
-      <a
-        href="{{ url_for('main.userView', user_id=current_user.id) }}"
-        class="home-profile"
-        >My Profile</a
-      >
-    </span>
+    {% if current_user.is_authenticated: %}
+    <div class="feedTitle-2">Latest Posts</div>
+    <div class="nav-right">
+      <span>
+        <form action="{{ url_for('main.recipeForm') }}" method="get">
+          <button class="home-newRec">
+            <i class="fa fa-plus-circle"></i> New Recipe
+          </button>
+        </form>
+      </span>
+      <span>
+        <a
+          href="{{ url_for('main.userView', user_id=current_user.id) }}"
+          class="home-profile"
+          >My Profile</a
+        >
+      </span>
+    </div>
+    {% else %}
+    <div class="feedTitle">Latest Posts</div>
+    <div class="right-flex"></div>
   </div>
   {% endif %}
 </div>

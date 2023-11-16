@@ -41,7 +41,7 @@
     {% endif %}
   </span>
 </section>
-<section class="profileFeed-head">
+<section class="navbar">
   <div class="btn-group">
     <button class="button" id="profile-recipes">Recipes</button>
     <button class="button" id="profile-photos">Photos</button>
@@ -50,6 +50,7 @@
     {% endif %}
   </div>
   <div class="feedTitle">User Recipes</div>
+  <div class="right-flex"></div>
 </section>
 <div id="recipeFeed">
   {% for post in recipes %} {% include 'post_template.html' %} {% endfor %}
