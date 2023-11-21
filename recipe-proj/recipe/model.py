@@ -77,7 +77,7 @@ class Step(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='steps')
-    text=db.Column(db.String(1024), nullable=False)
+    text=db.Column(db.String(1536), nullable=False)
 
 class Rating(db.Model):
     id=db.Column(db.Integer, primary_key=True)
