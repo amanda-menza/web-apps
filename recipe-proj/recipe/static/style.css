@@ -160,6 +160,9 @@ body {
   margin-bottom: 20px;
   padding: 5px;
 }
+.step-list {
+  margin: 8px;
+}
 .recipe-actions span {
   display: inline-block;
   text-align: center;
