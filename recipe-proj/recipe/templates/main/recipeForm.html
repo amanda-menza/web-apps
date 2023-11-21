@@ -92,15 +92,14 @@
 
 <script>
   // Insert your JavaScript code here
-  document.addEventListener("DOMContentLoaded", function () {
-    function checkCharacterLimit(textarea, maxLength) {
-      var currentLength = textarea.value.length;
-
-      if (currentLength > maxLength) {
-        // Trim the text to the specified limit
-        textarea.value = textarea.value.substring(0, maxLength);
-      }
+  function checkCharacterLimit(textarea, maxLength) {
+    var currentLength = textarea.value.length;
+    if (currentLength > maxLength) {
+      // Trim the text to the specified limit
+      textarea.value = textarea.value.substring(0, maxLength);
     }
+  }
+  document.addEventListener("DOMContentLoaded", function () {
     const createIngredientsTemplate = () => {
       const ingredientsTemplate = document.createElement("div");
       ingredientsTemplate.className = "ingredientsTemplate";
