@@ -6,7 +6,13 @@
   </div>
   <div>
     <label
-      >Description: <textarea name="description" required></textarea>
+      >Description:
+      <textarea
+        class="form-textarea"
+        rows="2"
+        name="description"
+        required
+      ></textarea>
     </label>
   </div>
   <div>
@@ -63,7 +69,15 @@
   </div>
   <div class="stepsContainer">
     <div class="stepsTemplate">
-      <input type="text" name="step" placeholder="Step" required />
+      <label
+        >Step:
+        <textarea
+          class="form-textarea"
+          name="step"
+          rows="2"
+          required
+        ></textarea>
+      </label>
     </div>
   </div>
   <div class="step-controls">
@@ -83,7 +97,7 @@
       ingredientsTemplate.className = "ingredientsTemplate";
       ingredientsTemplate.innerHTML = `
         <label>Ingredient: <input type="text" name="ingredient" required /></label>
-        <label>Quantity: <input type="number" name="ingredient-amt" required /></label>
+        <label>Quantity: <input type="number" name="ingredient-amt" step="any" required /></label>
         <input type="text" class="ingredient-measure" name="ingredient-measure" list="measureOptions" required />
         <datalist id="measureOptions">
           <!-- Options here -->
@@ -98,9 +112,11 @@
       const stepsTemplate = document.createElement("div");
       stepsTemplate.className = "stepsTemplate";
       stepsTemplate.innerHTML = `
-        <div class="stepsTemplate">
-          <input type="text" name="step" placeholder="Step" required />
-        </div>
+      <label
+          >Step: <textarea class="form-textarea"
+          name="step"
+          rows="2" required></textarea>
+        </label>
       `;
       return stepsTemplate;
     };
