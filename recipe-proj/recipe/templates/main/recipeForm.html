@@ -75,6 +75,7 @@
           class="form-textarea"
           name="step"
           rows="2"
+          oninput="checkCharacterLimit(this, 1024)"
           required
         ></textarea>
       </label>
@@ -92,6 +93,14 @@
 <script>
   // Insert your JavaScript code here
   document.addEventListener("DOMContentLoaded", function () {
+    function checkCharacterLimit(textarea, maxLength) {
+      var currentLength = textarea.value.length;
+
+      if (currentLength > maxLength) {
+        // Trim the text to the specified limit
+        textarea.value = textarea.value.substring(0, maxLength);
+      }
+    }
     const createIngredientsTemplate = () => {
       const ingredientsTemplate = document.createElement("div");
       ingredientsTemplate.className = "ingredientsTemplate";
@@ -115,6 +124,7 @@
       <label
           >Step: <textarea class="form-textarea"
           name="step"
+          oninput="checkCharacterLimit(this, 1024)"
           rows="2" required></textarea>
         </label>
       `;
