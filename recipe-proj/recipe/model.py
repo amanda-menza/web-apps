@@ -39,7 +39,7 @@ class Recipe(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='recipes')
     title=db.Column(db.String(128),nullable=False)
-    description = db.Column(db.String(512), nullable=False)
+    description = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime(), nullable=False)
     servings=db.Column(db.Integer, nullable=False)
     qingredients=db.relationship('Qingredient', back_populates='recipe')
@@ -77,7 +77,7 @@ class Step(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='steps')
-    text=db.Column(db.String(1024), nullable=False)
+    text=db.Column(db.Text, nullable=False)
 
 class Rating(db.Model):
     id=db.Column(db.Integer, primary_key=True)
