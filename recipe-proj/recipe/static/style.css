@@ -43,7 +43,7 @@ body {
 }
 .feedTitle-2 {
   margin-right: 290px;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -91,15 +91,16 @@ body {
   align-items: center;
   margin: 0 auto;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 24px;
 }
 
-.btn-group .button:not(:last-child) {
-  border-right: none; /* Prevent double borders */
+.btn-group .button:hover,
+.btn-group-2 .button:hover {
+  background-color: #a9a9a9;
 }
-
-.btn-group .button:hover {
-  background-color: darkgray;
+.btn-group .button:first-child,
+.btn-group-2 .button:first-child {
+  background-color: #a9a9a9;
 }
 
 .postFeed {
@@ -134,7 +135,6 @@ body {
   flex-wrap: wrap;
   justify-content: space-around;
   width: 60vw;
-  column-gap: -10px;
 }
 .main-container {
   margin: 20px;
@@ -147,18 +147,21 @@ body {
   border-radius: 12px;
   flex: 0 0 45%;
   margin-left: 10px;
+  margin-bottom: 20px;
 }
 .step-container {
   background-color: #bdd5ea;
   border-radius: 12px;
   flex: 0 0 45%;
   margin-right: 10px;
+  margin-bottom: 20px;
+  padding: 5px;
 }
 .recipe-actions span {
   display: inline-block;
   text-align: center;
   flex: 0 0 100%;
-  margin: 10px;
+  margin-bottom: 20px;
 }
 .bookmark-btn,
 .rate-btn,

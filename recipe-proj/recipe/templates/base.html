@@ -35,11 +35,12 @@
         ><i class="fa fa-home"></i
       ></a>
     </div>
-    <img
-      class="logo-img"
-      src="{{ url_for('static', filename='logo.png') }}"
-      alt="logo"
-    />
+    <a href="{{ url_for('main.home') }}"
+      ><img
+        class="logo-img"
+        src="{{ url_for('static', filename='logo.png') }}"
+        alt="logo"
+    /></a>
     <div class="right-flex"></div>
   </header>
 
