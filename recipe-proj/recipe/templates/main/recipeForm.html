@@ -29,7 +29,7 @@
       /></label>
       <input
         type="text"
-        id="ingredient-measure"
+        class="ingredient-measure"
         name="ingredient-measure"
         list="measureOptions"
         required
@@ -78,53 +78,41 @@
 <script>
   // Insert your JavaScript code here
   document.addEventListener("DOMContentLoaded", function () {
-    const ingredientsTemplate = document.createElement("div");
-    ingredientsTemplate.className = "ingredientsTemplate";
-    ingredientsTemplate.innerHTML = `
-      <label>Ingredient: <input type="text" name="ingredient" required /></label>
-      <label>Quantity: <input type="number" name="ingredient-amt" required /></label>
-      <input type="text" id="ingredient-measure" name="ingredient-measure" list="measureOptions" required />
-      <datalist id="measureOptions">
-        <option value="teaspoon(s)"></option>
-        <option value="tablespoon(s)"></option>
-        <option value="ounce(s)"></option>
-        <option value="fl. ounce(s)"></option>
-        <option value="cup(s)"></option>
-        <option value="pint(s)"></option>
-        <option value="quart(s)"></option>
-        <option value="gallon(s)"></option>
-        <option value="gram(s)"></option>
-        <option value="kilogram(s)"></option>
-        <option value="milligram(s)"></option>
-        <option value="pound(s)"></option>
-        <option value="milliliter(s)"></option>
-        <option value="liter(s)"></option>
-        <option value="pinch(es)"></option>
-      </datalist>
-    `;
+    const createIngredientsTemplate = () => {
+      const ingredientsTemplate = document.createElement("div");
+      ingredientsTemplate.className = "ingredientsTemplate";
+      ingredientsTemplate.innerHTML = `
+        <label>Ingredient: <input type="text" name="ingredient" required /></label>
+        <label>Quantity: <input type="number" name="ingredient-amt" required /></label>
+        <input type="text" class="ingredient-measure" name="ingredient-measure" list="measureOptions" required />
+        <datalist id="measureOptions">
+          <!-- Options here -->
+        </datalist>
+      `;
+      return ingredientsTemplate;
+    };
+    const ingredientsContainer = document.querySelector(
+      ".ingredientsContainer"
+    );
+    const createStepsTemplate = () => {
+      const stepsTemplate = document.createElement("div");
+      stepsTemplate.className = "stepsTemplate";
+      stepsTemplate.innerHTML = `
+        <div class="stepsTemplate">
+          <input type="text" name="step" placeholder="Step" required />
+        </div>
+      `;
+      return stepsTemplate;
+    };
 
-    const stepsTemplate = document.createElement("div");
-    stepsTemplate.className = "stepsTemplate";
-    stepsTemplate.innerHTML = `
-    <div class="stepsTemplate">
-      <input type="text" name="step" placeholder="Step" required />
-    </div>
-    `;
+    const stepsContainer = document.querySelector(".stepsContainer");
 
     document
       .getElementById("addIngredient")
       .addEventListener("click", function () {
-        document
-          .querySelector(".ingredientsContainer")
-          .appendChild(ingredientsTemplate);
+        const newIngredientsTemplate = createIngredientsTemplate();
+        ingredientsContainer.appendChild(newIngredientsTemplate);
       });
-
-    document.getElementById("addStep").addEventListener("click", function () {
-      const clonedStepsTemplate = stepsTemplate.cloneNode(true);
-      document
-        .querySelector(".stepsContainer")
-        .appendChild(clonedStepsTemplate);
-    });
 
     document
       .getElementById("removeIngredient")
@@ -139,14 +127,18 @@
         }
       });
 
+    document.getElementById("addStep").addEventListener("click", function () {
+      const newStepsTemplate = createStepsTemplate();
+      stepsContainer.appendChild(newStepsTemplate);
+    });
+
     document
       .getElementById("removeStep")
       .addEventListener("click", function () {
         const stepContainers = document.querySelectorAll(".stepsTemplate");
         if (stepContainers.length > 1) {
-          document
-            .querySelector(".stepsContainer")
-            .removeChild(stepContainers[stepContainers.length - 1]);
+          const lastStepContainer = stepContainers[stepContainers.length - 1];
+          lastStepContainer.parentElement.removeChild(lastStepContainer);
         }
       });
   });
