@@ -25,6 +25,12 @@ body {
   margin-bottom: 4px;
   display: flex;
 }
+.buy-btn {
+  float: right;
+  margin: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
 
 .navbar {
   display: flex;
@@ -81,7 +87,8 @@ body {
 }
 .home-newRec,
 .follow-btn,
-.photo-btn {
+.photo-btn,
+.buy-btn {
   background-color: #bdd5ea;
   border: 1px solid black;
   color: black;
@@ -180,6 +187,7 @@ body {
   display: inline;
   text-decoration: none;
 }
+
 .recipe-title,
 .user-info,
 .avgRating,
@@ -329,6 +337,29 @@ body {
 .form-title {
   font-size: 18px;
   font-weight: bold;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px;
+}
+
+.grid-item {
+  border: 2px solid #333;
+  overflow: hidden;
+}
+
+.merch-img {
+  display: block;
+  margin: auto;
+  height: 350px;
+  width: 350px;
+}
+.grid-item div {
+  text-align: center;
+  font-weight: bold;
+  background-color: #bdd5ea;
 }
 footer {
   background-color: #415d78;

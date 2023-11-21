@@ -243,10 +243,10 @@ def recipeForm_post():
     description = request.form.get("description")
     servings = request.form.get("servings")
     cookTime=request.form.get("cooking-time")
+
     new_recipe = model.Recipe(title=title, user=current_user,description=description, servings=servings, cooktime=cookTime,timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
     db.session.add(new_recipe)
     db.session.commit()
-    
     
     ingredient_fields = request.form.getlist("ingredient")
     ingredient_amt_fields = request.form.getlist("ingredient-amt")
@@ -280,6 +280,11 @@ def recipeForm_post():
         )
         db.session.add(new_step)
         db.session.commit()
+    
     return redirect(url_for("main.home"))
+@bp.route("/buyPage")
+@flask_login.login_required
+def buyPage():
+    return render_template("main/buyPage.html")
 
     

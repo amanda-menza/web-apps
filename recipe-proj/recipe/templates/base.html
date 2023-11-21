@@ -41,7 +41,11 @@
         src="{{ url_for('static', filename='logo.png') }}"
         alt="logo"
     /></a>
-    <div class="right-flex"></div>
+    <div class="right-flex">
+      <form action="{{ url_for('main.buyPage') }}">
+        <button class="buy-btn"><i class="fa fa-shopping-bag"></i> Buy</button>
+      </form>
+    </div>
   </header>
 
   <body>
