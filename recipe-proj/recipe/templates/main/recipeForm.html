@@ -152,6 +152,7 @@
     document
       .getElementById("removeStep")
       .addEventListener("click", function () {
+        event.preventDefault();
         const stepContainers = document.querySelectorAll(".stepsTemplate");
         if (stepContainers.length > 1) {
           const lastStepContainer = stepContainers[stepContainers.length - 1];
