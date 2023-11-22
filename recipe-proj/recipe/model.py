@@ -66,7 +66,7 @@ class Ingredient(db.Model):
 
 class Qingredient(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), nullable=False)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'))
     ingredient=db.relationship("Ingredient", back_populates="qingredients")
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     recipe=db.relationship('Recipe', back_populates='qingredients')

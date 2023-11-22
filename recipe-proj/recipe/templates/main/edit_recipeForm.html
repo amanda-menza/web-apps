@@ -1,43 +1,66 @@
 {% extends 'base.html' %} {% block content %}
-<form class="form" action="{{ url_for('main.recipeForm') }}" method="POST">
-  <div class="form-title">New Recipe Form</div>
+<form
+  class="form"
+  action="{{ url_for('main.edit_recipeForm', recipe_id=recipe.id) }}"
+  method="POST"
+>
+  <div class="form-title">Edit Recipe Form</div>
   <div>
-    <label>Title: <input type="text" name="title" required /></label>
+    <label
+      >Title:
+      <input type="text" name="title" value="{{ recipe.title }}" required
+    /></label>
   </div>
   <div>
     <label
       >Description:
-      <textarea
-        class="form-textarea"
-        rows="2"
-        name="description"
-        required
-      ></textarea>
+      <textarea class="form-textarea" rows="2" name="description" required>
+{{recipe.description}}</textarea
+      >
     </label>
   </div>
   <div>
-    <label>Servings: <input type="number" name="servings" required /></label>
+    <label
+      >Servings:
+      <input type="number" name="servings" value="{{recipe.servings}}" required
+    /></label>
   </div>
   <div>
     <label
       >Cooking Time (minutes):
-      <input type="number" name="cooking-time" required
+      <input
+        type="number"
+        name="cooking-time"
+        value="{{recipe.cooktime}}"
+        required
     /></label>
   </div>
   <div class="ingredientsContainer">
+    {% for qingredient in recipe.qingredients %}
     <div class="ingredientsTemplate">
       <label
-        >Ingredient: <input type="text" name="ingredient" required
+        >Ingredient:
+        <input
+          type="text"
+          name="ingredient"
+          value="{{qingredient.ingredient.name}}"
+          required
       /></label>
       <label
         >Quantity:
-        <input type="number" name="ingredient-amt" step="any" required
+        <input
+          type="number"
+          name="ingredient-amt"
+          step="any"
+          value="{{qingredient.amount}}"
+          required
       /></label>
       <input
         type="text"
         class="ingredient-measure"
         name="ingredient-measure"
         list="measureOptions"
+        value="{{qingredient.measure}}"
         required
       />
       <datalist id="measureOptions">
@@ -58,6 +81,7 @@
         <option value="pinch(es)"></option>
       </datalist>
     </div>
+    {% endfor %}
   </div>
   <div class="ingredient-controls">
     <button id="addIngredient" class="add">
@@ -68,17 +92,16 @@
     </button>
   </div>
   <div class="stepsContainer">
+    {% for step in recipe.steps %}
     <div class="stepsTemplate">
       <label
         >Step:
-        <textarea
-          class="form-textarea"
-          name="step"
-          rows="2"
-          required
-        ></textarea>
+        <textarea class="form-textarea" name="step" rows="2" required>
+{{step.text}}</textarea
+        >
       </label>
     </div>
+    {% endfor %}
   </div>
   <div class="step-controls">
     <button id="addStep" class="add"><i class="fa fa-plus"></i>Add Step</button>

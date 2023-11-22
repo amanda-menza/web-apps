@@ -112,19 +112,19 @@ def photo_upload(recipe_id):
     
     return redirect(url_for("main.recipeView", recipe_id=recipe.id))
 
-@bp.route("/removePhoto/<int:recipe_id>/<int:photo_id>", methods=["POST"])
+@bp.route("/removePhoto/<int:recipe_id>/<int:photo_id>/<string:file_ext>", methods=["POST"])
 @flask_login.login_required
-def removePhoto(recipe_id,photo_id):
+def removePhoto(recipe_id,photo_id,file_ext):
     photo=db.session.get(model.Photo, photo_id)
     db.session.delete(photo)
     db.session.commit()
-    # path = (
-    # pathlib.Path(current_app.root_path)
-    # / "static"
-    # / "photos"
-    # / f"photo-{photo_id}.{file_ext}"
-    # )
-    # pathlib.Path(path).unlink()
+    path = (
+    pathlib.Path(current_app.root_path)
+    / "static"
+    / "photos"
+    / f"photo-{photo_id}.{file_ext}"
+    )
+    pathlib.Path(path).unlink()
 
     
     return redirect(url_for("main.recipeView", recipe_id=recipe_id))
@@ -299,6 +299,89 @@ def recipeForm_post():
         db.session.commit()
     
     return redirect(url_for("main.home"))
+
+@bp.route("/edit_recipeForm/<int:recipe_id>")
+@flask_login.login_required
+def edit_recipeForm(recipe_id):
+    recipe = db.session.get(model.Recipe, recipe_id)
+    return render_template("main/edit_recipeForm.html", recipe=recipe)
+
+
+@bp.route("/edit_recipeForm/<int:recipe_id>", methods=["POST"])
+@flask_login.login_required
+def edit_recipeForm_post(recipe_id):
+    recipe = db.session.get(model.Recipe, recipe_id)
+    for qingredient in recipe.qingredients:
+        db.session.delete(qingredient)
+    for step in recipe.steps:
+        db.session.delete(step)
+    recipe.title = request.form.get("title")
+    recipe.description = request.form.get("description")
+    recipe.servings = request.form.get("servings")
+    recipe.cookTime=request.form.get("cooking-time")
+    db.session.commit()
+    
+    ingredient_fields = request.form.getlist("ingredient")
+    ingredient_amt_fields = request.form.getlist("ingredient-amt")
+    ingredient_measure_fields = request.form.getlist("ingredient-measure")
+
+    for i in range(len(ingredient_fields)):
+        ingredient_name = ingredient_fields[i]
+        ingredient_amt=ingredient_amt_fields[i]
+        ingredient_measure=ingredient_measure_fields[i]
+        # Create and save the Ingredient entity
+        query = db.select(model.Ingredient).where(model.Ingredient.name == ingredient_name)
+        old_ingredient = db.session.execute(query).scalar_one_or_none()
+        if not old_ingredient:
+            new_ingredient = model.Ingredient(name=ingredient_name)
+            db.session.add(new_ingredient)
+            db.session.commit()
+            ingredient_id=new_ingredient.id
+        else:
+            ingredient_id=old_ingredient.id
+        new_qingredient = model.Qingredient(
+            ingredient_id=ingredient_id,
+            recipe_id=recipe.id, amount=ingredient_amt,measure=ingredient_measure)
+        db.session.add(new_qingredient)
+        db.session.commit()
+    step_fields = request.form.getlist("step")
+    for step_text in step_fields:
+        # Create and save the Step entity, linking it to the Recipe
+        new_step = model.Step(
+        text=step_text,
+        recipe_id=recipe.id
+        )
+        db.session.add(new_step)
+        db.session.commit()
+    
+    return redirect(url_for("main.recipeView", recipe_id=recipe_id))
+
+@bp.route("/removeRecipe/<int:recipe_id>", methods=["POST"])
+@flask_login.login_required
+def removeRecipe(recipe_id):
+    recipe=db.session.get(model.Recipe, recipe_id)
+    for qingredient in recipe.qingredients:
+        db.session.delete(qingredient)
+    for step in recipe.steps:
+        db.session.delete(step)
+    for bookmark in recipe.bookmarks:
+        db.session.delete(bookmark)
+    for rating in recipe.ratings:
+        db.session.delete(rating)
+    for photo in recipe.responses:
+        db.session.delete(photo)
+        path = (
+        pathlib.Path(current_app.root_path)
+        / "static"
+        / "photos"
+        / f"photo-{photo.id}.{photo.file_extension}"
+        )
+        pathlib.Path(path).unlink()
+    db.session.delete(recipe)
+    db.session.commit()
+
+    return redirect(url_for("main.home"))
+
 @bp.route("/buyPage")
 @flask_login.login_required
 def buyPage():

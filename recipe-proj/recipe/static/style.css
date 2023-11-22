@@ -361,6 +361,20 @@ body {
   font-weight: bold;
   background-color: #bdd5ea;
 }
+.delete-btn,
+.edit-btn {
+  background-color: transparent;
+}
+.edit-actions .delete-btn,
+.edit-btn {
+  color: white;
+}
+.edit-actions span {
+  display: inline-block;
+  text-align: right;
+  flex: 1 0 100%;
+  margin-bottom: 20px;
+}
 footer {
   background-color: #415d78;
   color: #bdd5ea;
