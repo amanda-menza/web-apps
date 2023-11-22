@@ -112,6 +112,23 @@ def photo_upload(recipe_id):
     
     return redirect(url_for("main.recipeView", recipe_id=recipe.id))
 
+@bp.route("/removePhoto/<int:recipe_id>/<int:photo_id>", methods=["POST"])
+@flask_login.login_required
+def removePhoto(recipe_id,photo_id):
+    photo=db.session.get(model.Photo, photo_id)
+    db.session.delete(photo)
+    db.session.commit()
+    # path = (
+    # pathlib.Path(current_app.root_path)
+    # / "static"
+    # / "photos"
+    # / f"photo-{photo_id}.{file_ext}"
+    # )
+    # pathlib.Path(path).unlink()
+
+    
+    return redirect(url_for("main.recipeView", recipe_id=recipe_id))
+
 @bp.route("/ratingForm/<int:recipe_id>", methods=["GET"])
 @flask_login.login_required
 def ratingForm(recipe_id):

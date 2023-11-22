@@ -18,6 +18,7 @@
     {% endif %}
   </div>
 
-  {% for photo in photos %} {% include 'photo_template.html' %} {% endfor %}
+  {% for photo in photos %} {% include 'photo_template.html' with context %} {%
+  endfor %}
 </div>
 {% endblock %}

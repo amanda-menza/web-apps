@@ -9,4 +9,10 @@
     src="{{ url_for('static', filename='photos/photo-' ~ photo.id ~ '.' ~ photo.file_extension) }}"
     alt="Recipe Post"
   />
+  <form
+    action="{{ url_for('main.removePhoto', photo_id=photo.id,recipe_id=post.id) }}"
+    method="post"
+  >
+    <button class="delete-btn"><i class="fa fa-trash-o"></i></button>
+  </form>
 </div>
